@@ -31,10 +31,9 @@ Point2D getPoint(const std::vector<sf::Vector2f>& pts, float t) {
 
 // Cubic Bezier Slope Equation (the derivative of the Bezier equation)
 // B'(t) = 3(1-t)^2 * (P1-P0) + 6(1-t) * t * (P2-P1) + 3t^2 * (P3-P2)
-// This returns a direction vector, not a dy/dx ratio,
-// so vertical tangents don't cause a divide by zero
+// Returns a direction vector
 Point2D getSlope(const std::vector<sf::Vector2f>& pts, float t) {
-    // Calculate (1 - t), which is used in the first two terms
+    // Calculate (1 - t)
     float temp = 1 - t;
     // Blend the three differences between the control points using the derivative weights
     return 3 * (temp * temp) * (pts[1] - pts[0]) + 6 * (temp * t) * (pts[2] - pts[1]) +
@@ -76,7 +75,6 @@ float squaredDistance(const Point2D& a, const Point2D& b) {
     // d^2 = (x2 - x1)^2 + (y2 - y1)^2
     // (x1, y1) -> a.x, a.y
     // (x2, y2) -> b.x, b.y
-    // We skip the square root because it is only used to compare which point is closer
     // Calculate the difference between the two points
     Point2D d = a - b;
     // Add the squared differences of each axis
@@ -97,7 +95,7 @@ void handleInput(sf::Window& window, bool& shouldQuit) {
                 Point2D m = sf::Vector2f(mouse->position);
                 // Index of the closest point found so far
                 std::size_t best = 0;
-                // Distance to the closest point found so far (starts as the largest possible)
+                // Distance to the closest point found so far
                 float bestDist = INFINITY;
                 for (std::size_t i = 0; i < points.size(); i++) {
                     // Calculate how far this control point is from the mouse
